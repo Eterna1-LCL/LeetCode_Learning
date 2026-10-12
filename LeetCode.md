@@ -91,6 +91,8 @@ $\color{#ff0000}{有问题你所设计的解决方案必须只使用常数级的
 哈希表并不是常量空间，他的$\color{#ff0000}{空间复杂度是O(N)}$ 
 
 ## 正确方法双指针
+![左右双指针](Img\167.png)
+
 ```python
 class Solution:
     def twoSum(self, numbers: list[int], target: int) -> list[int]:
@@ -218,4 +220,57 @@ class Solution:
            sub += ch
            res = max(res, len(sub))
        return res
+```
+# 26.删除有序数组中的重复项
+![题目](Img\26删除有序数组中的重复项.png)
+
+题目中一提到重复想到$\color{#ff0000}{哈希表或者集合}$是正确的\
+但是题目要求原地修改就应该想到$\color{#ff0000}{读写指针}$也是快慢指针的一种，同时$\color{#ff0000}{空间复杂度为常数项}$也是提示词
+
+## 算法图解
+![读写指针](Img\26.png)
+
+```python
+class Solution:
+    def removeDuplicates(self, nums: list[int]) -> int:
+        read = 0 
+        write = 0 
+        while read < len(nums):
+            if nums[read] == nums[write]:
+                read += 1
+            else:
+                write += 1
+                nums[write] = nums[read]
+        return write + 1
+```
+
+# 704.二分查找$\color{#ff0000}{O(logN)}$
+![题目](Img\704二分查找.png)
+
+题目中一提到$\color{#ff0000}{有序、查找}$想到$\color{#ff0000}{二分查找}$\
+这个题目要注意的是$\color{#ff0000}{边界条件}$\
+对于大部分的代码来讲习惯用$\color{#ff0000}{左闭右开}$
+
+## 算法图解
+![读写指针](Img\704.png)
+
+```python
+class Solution:
+    def search(self, nums: list[int], target: int) -> int:
+        left = 0
+        right = len(nums)
+        mid = (left + right) // 2 # 这是向左取整
+        while left < right: # 由于你定义的区间是[left, right)你必须left < right
+            if nums[mid] == target:
+                return mid
+            elif nums[mid] < target:
+                # 这里加一的原因是：首先你的区间是左闭右开
+                # 由于你中了elif之后你一定已经判断完成mid这个位置的数据了，因此你不要重复判断就需要+1移位
+                left = mid + 1    
+            elif nums[mid] > target:
+                # 这里没有加一的原因是：首先你的区间是左闭右开
+                # 由于你中了elif之后你已经判断完成mid这个位置的数据了，但是右边是开区间因此取不到不用加一了
+                right = mid 
+            mid = (left + right) // 2 # 不要忘记更新mid
+        return -1
 ```
