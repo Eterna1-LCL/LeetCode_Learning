@@ -1,25 +1,24 @@
 class Solution:
-    def subarraySum(self, nums: list[int], k: int) -> int:
-        left = 0 
-        right = 0
-        count = 0
+    def merge(self, intervals: list[list[int]]) -> list[list[int]]:
 
-        while left < len(nums):
+        intervals.sort(key=lambda x: x[0])
+        cur = intervals[0]
+        ans = []
 
-            if nums[left] == nums [right] == k:
-                count += 1
-                left += 1
-            elif nums[left] + nums [right] == k and left < right:
-                count += 1
-                left += 1
-            elif right < len(nums) - 1:
-                right += 1
+        for i in range(len(intervals) - 1):
+
+            Next = intervals[i + 1]
+            if cur[1] >=  Next[0] :
+                cur = [cur[0], max(cur[1], Next[1])]     
             else:
-                right = len(nums) - 1
+                ans.append(cur)
+                cur = Next
 
-        return count
-
+        ans.append(cur)
+        
+        return ans
+    
 if __name__ == "__main__":
     s = Solution()
-    mat = s.subarraySum([1,2,3], 3)
-    print(mat)
+    ans = s.merge([[1,3],[2,6],[8,10],[15,18]])
+    print(ans)
