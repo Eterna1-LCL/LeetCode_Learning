@@ -1,24 +1,29 @@
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
 class Solution:
-    def merge(self, intervals: list[list[int]]) -> list[list[int]]:
-
-        intervals.sort(key=lambda x: x[0])
-        cur = intervals[0]
-        ans = []
-
-        for i in range(len(intervals) - 1):
-
-            Next = intervals[i + 1]
-            if cur[1] >=  Next[0] :
-                cur = [cur[0], max(cur[1], Next[1])]     
-            else:
-                ans.append(cur)
-                cur = Next
-
-        ans.append(cur)
+    def mergeTwoLists(self, list1: ListNode | None, list2: ListNode | None) -> ListNode | None:
         
+        ans = None
+        
+        while list1 != None and list2 != None:
+            
+            cur_list1 = list1.val
+            cur_list2 = list2.val
+            
+            if cur_list1 <= cur_list2:
+                ans = ListNode(cur_list1, list2)
+            else:
+                ans = ListNode(cur_list2, list1)
+            
+            list1 = list1.next
+            list2 = list2.next
+
         return ans
-    
+
 if __name__ == "__main__":
     s = Solution()
-    ans = s.merge([[1,3],[2,6],[8,10],[15,18]])
+    ans = s.mergeTwoLists([1,2,4], [1,3,4])
     print(ans)
